@@ -1,0 +1,146 @@
+server:
+  port: 8081
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      username: root
+      password: root
+      url: jdbc:mysql://localhost:10086/mybatis_plus?characterEncoding=utf8
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      initial-size: 1
+      max-active: 20
+      min-idle: 1
+      max-wait: 60000
+      validation-query: select 'x'
+      validationQueryTimeout: 5
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      filter:
+        stat:
+          enabled: true
+          log-slow-sql: true
+          slow-sql-millis: 1000
+          merge-sql: true
+          #db-type: sqlserver
+        slf4j:
+          enabled: true
+          connection-log-enabled: true
+          connection-close-after-log-enabled: false
+          connection-commit-after-log-enabled: true
+          connection-connect-after-log-enabled: false
+          connection-connect-before-log-enabled: false
+          connection-log-error-enabled: true
+          data-source-log-enabled: true
+          result-set-log-enabled: false
+          statement-log-enabled: true
+          statement-executable-sql-log-enable: true
+        wall:
+          enabled: true
+          config:
+            alter-table-allow: false
+            truncate-allow: false
+            drop-table-allow: false
+            #是否允许非以上基本语句的其他语句，缺省关闭，通过这个选项就能够屏蔽DDL。
+            none-base-statement-allow: false
+            #检查UPDATE语句是否无where条件，这是有风险的，但不是SQL注入类型的风险
+            update-where-none-check: true
+            #SELECT ... INTO OUTFILE 是否允许，这个是mysql注入攻击的常见手段，缺省是禁止的
+            select-into-outfile-allow: false
+            #是否允许调用Connection.getMetadata方法，这个方法调用会暴露数据库的表信息
+            metadata-allow: true
+            #多条sql
+            multiStatementAllow: true
+          ##对被认为是攻击的SQL进行LOG.error输出
+          log-violation: true
+          #对被认为是攻击的SQL抛出SQLExcepton
+          throw-exception: true
+          #db-type: mysql
+      web-stat-filter:
+        enabled: true
+        url-pattern: /*
+        exclusions: '*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*'
+        #spring.datasource.druid.stat-view-servlet.allow=
+        #你可以配置principalCookieName，使得druid能够知道当前的cookie的用户是谁
+        #principal-cookie-name: admin
+        #你可以配置principalSessionName，使得druid能够知道当前的session的用户是谁
+        #principal-session-name: admin
+        #置profileEnable能够监控单个url调用的sql列表。
+        profile-enable: true
+        #session统计功能
+        session-stat-enable: false
+        #最大session数
+        session-stat-max-count: 100000
+      stat-view-servlet:
+        #allow: ${GATEWAY_HOST:172.26.114.241}
+        enabled: true
+        login-username: jiliugang
+        login-password: 2077
+        url-pattern: /druid/*
+        #允许清除记录
+        reset-enable: false
+        ###############?????????druid????????########################################
+
+#mybatis
+mybatis-plus:
+  config-location: classpath:/mybatis/mybatis-conf.xml
+  mapper-locations: classpath*:/mapper/**Mapper.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.example.mapper_test.entity
+  global-config:
+    #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+    id-type: 1
+    #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+    field-strategy: 2
+    #驼峰下划线转换
+    db-column-underline: true
+    #刷新mapper 调试神器
+    refresh-mapper: true
+    #数据库大写下划线转换
+    #capital-mode: true
+    #序列接口实现类配置
+    #key-generator: com.baomidou.springboot.xxx
+    #逻辑删除配置（下面3个配置）
+    logic-delete-value: 0
+    logic-not-delete-value: 1
+    #自定义SQL注入器
+    #sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+    #自定义填充策略接口实现
+    #meta-object-handler: com.baomidou.springboot.xxx
+    configuration:
+      map-underscore-to-camel-case: true
+      cache-enabled: false
+
+#mybatis:
+#  config-location: classpath:/mybatis/mybatis-conf.xml
+#  mapper-locations: classpath*:/mapper/**Mapper.xml
+#    #实体扫描，多个package用逗号或者分号分隔
+#  typeAliasesPackage: com.example.mapper_test.entity
+#  global-config:
+#      #主键类型  0:"数据库ID自增", 1:"用户输入ID",2:"全局唯一ID (数字类型唯一ID)", 3:"全局唯一ID UUID";
+#    id-type: 1
+#      #字段策略 0:"忽略判断",1:"非 NULL 判断"),2:"非空判断"
+#    field-strategy: 2
+#      #驼峰下划线转换
+#    db-column-underline: true
+#      #刷新mapper 调试神器
+#    refresh-mapper: true
+#      #数据库大写下划线转换
+#      #capital-mode: true
+#      #序列接口实现类配置
+#      #key-generator: com.baomidou.springboot.xxx
+#      #逻辑删除配置（下面3个配置）
+#      logic-delete-value: 0
+#      logic-not-delete-value: 1
+#      #自定义SQL注入器
+#      #sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
+#      #自定义填充策略接口实现
+#      #meta-object-handler: com.baomidou.springboot.xxx
+#      configuration:
+#        map-underscore-to-camel-case: true
+#        cache-enabled: false
+logging:
+  config: classpath:log4j2.xml
