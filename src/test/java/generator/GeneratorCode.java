@@ -5,9 +5,7 @@ import freemarker.template.*;
 
 import java.io.*;
 import java.lang.reflect.Field;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * ClassName: GeneratorCode
@@ -21,22 +19,28 @@ import java.util.Map;
 public class GeneratorCode {
     private static String TEMPLATE_PATH = "src\\main\\resources\\templates";
     private static Configuration configuration = null;
-    private static Map<String,String> fieldNameTypeMap = new HashMap<>();
+    private static List<Map<String,String>> fieldNameTypeMap = new ArrayList<>();
     //项目主包名称
     private static String packageName = "com.example.mapper_test";
     public static void main(String[] args) {
         GeneratorCode.generatorCode(User.class);
     }
     public static void generatorCode(Class entityClass) {
+        //Configuration
+        initConfiguration();
         //初始化查找实体类属性信息
         fieldNameTypeMap = getFieldInfo(entityClass);
         //得到对应渲染数据
         Map serviceClassInfo = getClassInfo(entityClass,"Service");
         Map implClassInfo = getClassInfo(entityClass,"ServiceImpl");
-        //Configuration
-        initConfiguration();
+        Map mapperClassInfo = getClassInfo(entityClass,"Mapper");
+        Map controllerClassInfo = getClassInfo(entityClass,"Controller");
+        Map mapperXml = getClassInfo(entityClass,"MapperXml");
+        generatorFile(mapperClassInfo);
         generatorFile(serviceClassInfo);
         generatorFile(implClassInfo);
+        generatorFile(controllerClassInfo);
+        generatorFile(mapperXml);
    }
     private static void initConfiguration() {
         configuration = new Configuration(Configuration.getVersion());
@@ -46,15 +50,18 @@ public class GeneratorCode {
             e.printStackTrace();
         }
     }
-    private static Map<String, String> getFieldInfo(Class entityClass) {
+    private static List<Map<String, String>> getFieldInfo(Class entityClass) {
         //得到属性名
         Field[] declaredFields = entityClass.getDeclaredFields();
-        Map<String,String> fieldNameTypeMap = new HashMap<>();
+        List<Map<String, String>> fieldNameTypeMap = new ArrayList<>();
         for (Field field : declaredFields){
+            Map<String, String> fieldMap = new HashMap<>();
             String type = field.getType().getSimpleName();
             String name = field.getName();
             //将属性名和对应类型放入map中
-            fieldNameTypeMap.put(name,type);
+            fieldMap.put("name",name);
+            fieldMap.put("type",type);
+            fieldNameTypeMap.add(fieldMap);
         }
         return fieldNameTypeMap;
     }
@@ -72,21 +79,37 @@ public class GeneratorCode {
         String realPath = null;
         String classPath = null;
         String classTypeName = null;
+        Boolean isXml = false;
         if ("Service".equals(typeName)){
-            realPath = "src.main.java.com.example.mapper_test"+".service";
-            classPath = "com.example.mapper_test"+".service";
+            realPath = "src.main.java."+packageName+".service";
+            classPath = packageName+".service";
             classTypeName = className+"Service";
         }else if ("ServiceImpl".equals(typeName)){
-            realPath = "src.main.java.com.example.mapper_test.service"+".impl";
-            classPath = "com.example.mapper_test.service"+".impl";
+            realPath = "src.main.java."+packageName+".service.impl";
+            classPath = packageName+".service.impl";
             classTypeName = className+"ServiceImpl";
+        }else if ("Mapper".equals(typeName)){
+            realPath = "src.main.java."+packageName+".mapper";
+            classPath = packageName+".mapper";
+            classTypeName = className+"Mapper";
+        }else if ("Controller".equals(typeName)){
+            realPath = "src.main.java."+packageName+".controller";
+            classPath = packageName+".controller";
+            classTypeName = className+"Controller";
+        }else if ("MapperXml".equals(typeName)){
+            realPath = "src.main.resources.mapper";
+            classTypeName = className+"Mapper";
+            //应对嵌套渲染问题
+            map.put("sqlPinJie","#{");
+            isXml = true;
         }
+        map.put("isXml",isXml);
         map.put("classTypeName",classTypeName);
         map.put("realPath",realPath);
         map.put("classPath",classPath);
         //日期
         map.put("date",new Date().toString());
-        map.put("field",fieldNameTypeMap);
+        map.put("fields",fieldNameTypeMap);
         return map;
     }
 
@@ -103,7 +126,12 @@ public class GeneratorCode {
            if (!directory.exists()){
                directory.mkdirs();
            }
-           File docFile = new File(filePath + "\\" + classInfo.get("classTypeName")+".java");
+           File docFile = null;
+           if ((Boolean) classInfo.get("isXml")){
+               docFile = new File(filePath + "\\" + classInfo.get("classTypeName")+".xml");
+           }else {
+               docFile = new File(filePath + "\\" + classInfo.get("classTypeName")+".java");
+           }
            out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(docFile)));
            // step6 输出文件
            template.process(classInfo, out);
@@ -112,7 +140,11 @@ public class GeneratorCode {
        } catch (TemplateException e) {
            e.printStackTrace();
        }
-       System.out.println("^^^^^^^^^^^^^^^^^^^^^^^^User.java 文件创建成功 !");
+        if ((Boolean) classInfo.get("isXml")){
+            System.out.println("----------------"+classInfo.get("classTypeName")+".xml 文件创建成功 !");
+        }else {
+            System.out.println("----------------"+classInfo.get("classTypeName")+".java 文件创建成功 !");
+        }
    }
     //首字母转小写
     public static String toLowerCaseFirstOne(String s){

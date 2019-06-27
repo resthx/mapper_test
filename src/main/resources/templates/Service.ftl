@@ -9,7 +9,6 @@ import java.util.List;
 * date: ${date}
 */
 public interface ${className}Service {
-    List<${className}> find${className}All(${className} ${classParamName});
-    ${className} select${className}ById(String id);
-    List<${className}> select${className}ByPage(${className} ${classParamName},int page,Integer limit);
+    ${className} selectById(String id);
+    List<${className}> selectByPage(${className} ${classParamName},int page,Integer limit);
 }

@@ -17,18 +17,14 @@ import java.util.List;
 public class ${className}ServiceImpl implements ${className}Service{
     @Autowired
     private ${className}Mapper ${classParamName}Mapper;
+
     @Override
-    public List<${className}> find${className}All(${className} ${classParamName}) {
-        return ${classParamName}Mapper.select${className}(${classParamName});
+    public ${className} selectById(String id) {
+        return ${classParamName}Mapper.selectById(id);
     }
 
     @Override
-    public ${className} select${className}ById(String id) {
-        return ${classParamName}Mapper.select${className}ById(id);
-    }
-
-    @Override
-    public List<${className}> select${className}ByPage(${className} ${classParamName}, int page, Integer limit) {
-        return ${classParamName}Mapper.select${className}ByPage(${classParamName},page,limit);
+    public List<${className}> selectByPage(${className} ${classParamName}, int page, Integer limit) {
+        return ${classParamName}Mapper.selectByPage(${classParamName},page,limit);
     }
 }
