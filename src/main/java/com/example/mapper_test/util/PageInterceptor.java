@@ -71,17 +71,20 @@ public class PageInterceptor implements Interceptor{
 
                 //参数名称和在service中设置到map中的名称一致
                 currPage = (int) paraObject.get("page");
-
+                Integer limit = (Integer) paraObject.get("limit");
+                if (limit!=null){
+                    pageSize = limit;
+                }
                 String sql = (String) MetaObjectHandler.getValue("delegate.boundSql.sql");
                 //也可以通过statementHandler直接获取
                 //sql = statementHandler.getBoundSql().getSql();
-
                 //构建分页功能的sql语句
                 String limitSql;
                 sql = sql.trim();
                 limitSql = sql + " limit " + (currPage - 1) * pageSize + "," + pageSize;
                 //将构建完成的分页sql语句赋值个体'delegate.boundSql.sql'，偷天换日
                 MetaObjectHandler.setValue("delegate.boundSql.sql", limitSql);
+                pageSize = 10;
             }
         }
         //调用原对象的方法，进入责任链的下一级
@@ -98,9 +101,6 @@ public class PageInterceptor implements Interceptor{
     public void setProperties(Properties properties) {
 //如果项目中分页的pageSize是统一的，也可以在这里统一配置和获取，这样就不用每次请求都传递pageSize参数了。参数是在配置拦截器时配置的。
         String limit1 = properties.getProperty("limit");
-        if (limit1==null){
-            this.pageSize = 10;
-        }
         this.pageSize = Integer.valueOf(limit1);
         this.dbType = properties.getProperty("dbType", "mysql");
     }

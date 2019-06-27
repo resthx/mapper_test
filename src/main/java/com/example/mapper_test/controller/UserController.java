@@ -1,7 +1,7 @@
 package com.example.mapper_test.controller;
 
 import com.example.mapper_test.entity.User;
-import com.example.mapper_test.service.UserService;
+/*import com.example.mapper_test.service.UserService;*/
 import com.example.mapper_test.util.RespDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,8 +23,8 @@ import java.util.List;
 @RestController
 @RequestMapping("user")
 public class UserController {
-    @Autowired
-    private UserService userService;
+   /* @Autowired
+    private *//**//*UserService userService;
     @RequestMapping("findAll")
     public RespDate findAll(User user){
         List<User> all = userService.findAll(user);
@@ -39,5 +39,5 @@ public class UserController {
     public RespDate find(User user,@RequestParam("page") int page,@RequestParam(value = "limit",required = false) Integer limit){
         List<User> users = userService.selectByPage(user, page, limit);
         return RespDate.set(0,users,null);
-    }
+    }*/
 }
