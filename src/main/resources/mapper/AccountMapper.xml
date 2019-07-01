@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.mapper_test.mapper.AccountMapper">
+    <sql id="commonSql">
+id ,username
+    </sql>
+    <resultMap id="resultAccount" type="com.example.mapper_test.entity.Account" autoMapping="true">
+        <id property="id" column="id"></id>
+    </resultMap>
+    <select id="selectById" resultMap="resultAccount">
+        select <include refid="commonSql"></include> from account where id = #{id}
+    </select>
+    <select id="selectByPage" resultMap="resultAccount">
+        select <include refid="commonSql"></include>
+        from account
+        <where>
+            <if test="account.id!=null">
+                id = #{account.id}
+            </if>
+            <if test="account.password!=null and account.password!=''">
+                password = #{account.password}
+            </if>
+            <if test="account.username!=null and account.username!=''">
+                username = #{account.username}
+            </if>
+        </where>
+    </select>
+</mapper>
