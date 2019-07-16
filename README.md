@@ -1,0 +1,2 @@
+# mapper_test
+练习springboot整合mybatis,druid,手写分页mybatis插件,结合mybatisplus,自动识别Page后缀查询,新版加入了手写实现的自动代码生成,可自己定义相关模板,灵活开发
