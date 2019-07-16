@@ -10,19 +10,82 @@ $(document).ready(function() {
             },
             mounted: function () {
                 this.searchUser();
+                layui.use(['laydate', 'form', 'laypage'], function () {
+
+                    var laydate = layui.laydate;
+                    var form = layui.form;
+                    //分页
+                    var laypage = layui.laypage;
+                    //完整功能
+                    laypage.render({
+                        elem: 'pageClick',
+                        count: userVue.count,
+                        layout: ['prev', 'page', 'next', 'limit', 'refresh', 'skip'],
+                        jump: function (obj,first) {
+                            //首次不执行
+                            if(!first){
+                                userVue.page = obj.curr;
+                                userVue.limit = obj.limit;
+                                userVue.searchUser();
+                            }
+                        }
+                    });
+                    /*//调用分页
+                laypage.render({
+                    elem: '#pageClick'
+                    ,count: data.length
+                    ,jump: function(obj){
+                        //模拟渲染
+                        /!*document.getElementById('biuuu_city_list').innerHTML = function(){
+                            var arr = []
+                                ,thisData = data.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
+                            layui.each(thisData, function(index, item){
+                                arr.push('<li>'+ item +'</li>');
+                            });
+                            return arr.join('');
+                        }();*!/
+                    }
+                });*/
+                    // 监听全选
+                    form.on('checkbox(checkall)', function (data) {
+                        if (data.elem.checked) {
+                            $('tbody input').prop('checked', true);
+                        } else {
+                            $('tbody input').prop('checked', false);
+                        }
+                        form.render('checkbox');
+                    });
+
+                    //执行一个laydate实例
+                    laydate.render({
+                        elem: '#start' //指定元素
+                    });
+
+                    //执行一个laydate实例
+                    laydate.render({
+                        elem: '#end' //指定元素
+                    });
+                });
             },
             methods :{
                 searchUser:function() {
                     var data = $('#formData').serializeArray();
+                    data.push({
+                        name:'page',
+                        value: this.page
+                    });
+                    data.push({
+                        name:'limit',
+                        value: this.limit
+                    });
                     var objectToJson = dvs.objectToJson(data);
-                    objectToJson[page] = userVue.page;
-                    objectToJson[limit] = userVue.limit;
-                    $.post("../user/find",JSON.stringify(objectToJson),function (json) {
+                    $.post("../user/find",objectToJson,function (json) {
                         if (json.code!=0){
                             alert("查询失败")
                             return;
                         }
                         userVue.userList = json.data.users;
+                        debugger
                         userVue.count = json.data.count;
                         // var limit = userVue.limit;
                         // userVue.pageTotal = Math.ceil(count/limit);
@@ -35,66 +98,9 @@ $(document).ready(function() {
                 changeLimit:function (limit) {
                     userVue.limit = limit;
                     this.searchUser();
-                }
+                },
             }
         })
-    layui.use(['laydate', 'form', 'laypage'], function () {
-        var vuecount = userVue.count;
-        var laydate = layui.laydate;
-        var form = layui.form;
-        //分页
-        var laypage = layui.laypage;
-        //完整功能
-        laypage.render({
-            elem: 'pageClick',
-            count: vuecount,
-            layout: ['count', 'prev', 'page', 'next', 'limit', 'refresh', 'skip'],
-            jump: function (obj,first) {
-                //首次不执行
-                if(!first){
-                    userVue.page = obj.curr;
-                    userVue.limit = obj.limit;
-                    userVue.searchUser();
-                }
-            }
-        });
-        /*//调用分页
-    laypage.render({
-        elem: '#pageClick'
-        ,count: data.length
-        ,jump: function(obj){
-            //模拟渲染
-            /!*document.getElementById('biuuu_city_list').innerHTML = function(){
-                var arr = []
-                    ,thisData = data.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
-                layui.each(thisData, function(index, item){
-                    arr.push('<li>'+ item +'</li>');
-                });
-                return arr.join('');
-            }();*!/
-        }
-    });*/
-        // 监听全选
-        form.on('checkbox(checkall)', function (data) {
-
-            if (data.elem.checked) {
-                $('tbody input').prop('checked', true);
-            } else {
-                $('tbody input').prop('checked', false);
-            }
-            form.render('checkbox');
-        });
-
-        //执行一个laydate实例
-        laydate.render({
-            elem: '#start' //指定元素
-        });
-
-        //执行一个laydate实例
-        laydate.render({
-            elem: '#end' //指定元素
-        });
-    });
 })
 /*用户-停用*/
 function member_stop(obj,id){

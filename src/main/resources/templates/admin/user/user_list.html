@@ -8,9 +8,11 @@
         <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
         <link rel="stylesheet" href="../css/font.css">
         <link rel="stylesheet" href="../css/xadmin.css">
+        <link rel="stylesheet" href="../css/bootstrap.css">
         <script src="../lib/layui/layui.js" charset="utf-8"></script>
         <script type="text/javascript" src="../js/xadmin.js"></script>
         <script type="text/javascript" src="../js/jquery.min.js"></script>
+        <script type="text/javascript" src="../js/bootstrap.js"></script>
         <!--[if lt IE 9]>
           <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
           <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
@@ -41,7 +43,7 @@
                                     <input class="layui-input"  autocomplete="off" placeholder="截止日" name="end" id="end">
                                 </div>
                                 <div class="layui-inline layui-show-xs-block">
-                                    <input type="text" name="username"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
+                                    <input type="text" name="name"  placeholder="请输入用户名" autocomplete="off" class="layui-input">
                                 </div>
                                 <div class="layui-inline layui-show-xs-block">
                                     <button class="layui-btn" type="button" @click="searchUser"><i class="layui-icon">&#xe615;</i></button>
@@ -97,8 +99,9 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="layui-card-body ">
-                            <div id="pageClick"></div>
+                        <div class="row" style="height: 80px">
+                            <div class="col-md-4 text-right" style="height: 50px;vertical-align:middle"><p style="line-height: 50px">共{{count}}条</p></div>
+                            <div class="col-md-8" style="height: 50px"><div id="pageClick" style="height: 30px;margin-top: 0px"></div></div>
                         </div>
                     </div>
                 </div>
