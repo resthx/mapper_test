@@ -6,9 +6,10 @@ import java.util.List;
 /**
 * ClassName: UserService
 * Description:
-* date: Mon Jul 01 15:09:16 CST 2019
+* date: Tue Jul 02 16:20:16 CST 2019
 */
 public interface UserService {
     User selectById(String id);
     List<User> selectByPage(User user,int page,Integer limit);
+    int selectCount(User user);
 }

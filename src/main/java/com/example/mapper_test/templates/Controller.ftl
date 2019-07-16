@@ -27,7 +27,7 @@ public class ${className}Controller {
     }
     @RequestMapping("find")
     public RespDate find(${className} ${classParamName},@RequestParam("page") int page,@RequestParam(value = "limit",required = false) Integer limit){
-    List<${className}> ${classParamName}s = ${classParamName}Service.selectByPage(${classParamName}, page, limit);
+        List<${className}> ${classParamName}s = ${classParamName}Service.selectByPage(${classParamName}, page, limit);
         return RespDate.set(0,${classParamName}s,null);
     }
 }

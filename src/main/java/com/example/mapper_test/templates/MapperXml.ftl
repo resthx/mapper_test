@@ -11,7 +11,7 @@
                 <#if field.name?matches("^\\w*password\\w*")>
                 <#assign i=i+1>
                 <#else>
-                                ${field.name}
+                    ${field.name}
                 </#if>
             <#else>
                 <#if field.name?matches("^\\w*password\\w*")>
@@ -30,8 +30,7 @@
         select <include refid="commonSql"></include> from ${classParamName} where id = ${r'#{id}'}
     </select>
     <select id="selectByPage" resultMap="result${className}">
-        select <include refid="commonSql"></include>
-        from ${classParamName}
+        select <include refid="commonSql"></include> from ${classParamName}
         <where>
         <#list fields as field>
             <#if (field.type)=='String'>

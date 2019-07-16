@@ -8,7 +8,7 @@ import org.apache.ibatis.annotations.Param;
 /**
 * ClassName: AccountMapper
 * Description:
-* date: Mon Jul 01 15:10:16 CST 2019
+* date: Tue Jul 02 15:48:52 CST 2019
 */
 public interface AccountMapper extends BaseMapper<Account> {
     List<Account> selectByPage(Account account,@Param("page") int page,@Param("limit") Integer limit);

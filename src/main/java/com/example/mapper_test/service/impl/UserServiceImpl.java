@@ -11,7 +11,7 @@ import java.util.List;
 /**
 * ClassName: UserServiceImpl
 * Description:
-* date: Mon Jul 01 15:09:16 CST 2019
+* @date Tue Jul 02 16:20:16 CST 2019
 */
 @Service
 public class UserServiceImpl implements UserService{
@@ -26,5 +26,11 @@ public class UserServiceImpl implements UserService{
     @Override
     public List<User> selectByPage(User user, int page, Integer limit) {
         return userMapper.selectByPage(user,page,limit);
+    }
+
+    @Override
+    public int selectCount(User user) {
+        Integer i = userMapper.selectCount(user);
+        return i;
     }
 }

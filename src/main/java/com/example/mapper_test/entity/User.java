@@ -4,6 +4,8 @@ package com.example.mapper_test.entity;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;*/
 
+import java.util.Date;
+
 /**
  * ClassName: User
  * Description:
@@ -21,6 +23,33 @@ public class User {
     private String mobile;
     private String img;
     private Integer age;
+    private Date createTime;
+    private Integer level;
+    private Boolean isVIP;
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
+    public Integer getLevel() {
+        return level;
+    }
+
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
+    public Boolean getVIP() {
+        return isVIP;
+    }
+
+    public void setVIP(Boolean VIP) {
+        isVIP = VIP;
+    }
 
     public String getName() {
         return name;

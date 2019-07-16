@@ -1,8 +1,11 @@
 package generator;
 
 import com.example.mapper_test.entity.Account;
+import com.example.mapper_test.entity.News;
 import com.example.mapper_test.entity.User;
 import freemarker.template.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.lang.reflect.Field;
@@ -18,13 +21,14 @@ import java.util.*;
  * @since JDK 1.8
  */
 public class GeneratorCode {
-    private static String TEMPLATE_PATH = "src\\main\\resources\\templates";
+    private final static String TEMPLATE_PATH = "src\\main\\java\\com\\example\\mapper_test\\templates";
     private static Configuration configuration = null;
     private static List<Map<String,String>> fieldNameTypeMap = new ArrayList<>();
+    private static Logger logger = LoggerFactory.getLogger(GeneratorCode.class);
     //项目主包名称
-    private static String packageName = "com.example.mapper_test";
+    private final static String packageName = "com.example.mapper_test";
     public static void main(String[] args) {
-        GeneratorCode.generatorCode(Account.class);
+        GeneratorCode.generatorCode(News.class);
     }
     public static void generatorCode(Class entityClass) {
         //Configuration
@@ -32,11 +36,11 @@ public class GeneratorCode {
         //初始化查找实体类属性信息
         fieldNameTypeMap = getFieldInfo(entityClass);
         //得到对应渲染数据
-        Map serviceClassInfo = getClassInfo(entityClass,"Service");
-        Map implClassInfo = getClassInfo(entityClass,"ServiceImpl");
-        Map mapperClassInfo = getClassInfo(entityClass,"Mapper");
-        Map controllerClassInfo = getClassInfo(entityClass,"Controller");
-        Map mapperXml = getClassInfo(entityClass,"MapperXml");
+        Map<String,Object> serviceClassInfo = getClassInfo(entityClass,"Service");
+        Map<String,Object> implClassInfo = getClassInfo(entityClass,"ServiceImpl");
+        Map<String,Object> mapperClassInfo = getClassInfo(entityClass,"Mapper");
+        Map<String,Object> controllerClassInfo = getClassInfo(entityClass,"Controller");
+        Map<String,Object> mapperXml = getClassInfo(entityClass,"MapperXml");
         generatorFile(mapperClassInfo);
         generatorFile(serviceClassInfo);
         generatorFile(implClassInfo);
@@ -142,9 +146,9 @@ public class GeneratorCode {
            e.printStackTrace();
        }
         if ((Boolean) classInfo.get("isXml")){
-            System.out.println("----------------"+classInfo.get("classTypeName")+".xml 文件创建成功 !");
+            logger.info("----------------"+classInfo.get("classTypeName")+".xml 文件创建成功 !");
         }else {
-            System.out.println("----------------"+classInfo.get("classTypeName")+".java 文件创建成功 !");
+            logger.info("----------------"+classInfo.get("classTypeName")+".java 文件创建成功 !");
         }
    }
     //首字母转小写

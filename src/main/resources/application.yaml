@@ -82,8 +82,21 @@ spring:
         url-pattern: /druid/*
         #允许清除记录
         reset-enable: false
-        ###############?????????druid????????########################################
-
+        ###############druid########################################
+  #freemarker配置
+  freemarker:
+    enabled: true
+    cache: false
+    template-loader-path: classpath:/templates/
+    suffix: .html
+  resources:
+    static-locations: classpath:/static/,classpath:/static/templates/
+#  #权限控制
+#  security:
+#    user:
+#      name: admin
+#      password: admin
+#      roles: user, admin
 #mybatis
 mybatis-plus:
   config-location: classpath:/mybatis/mybatis-conf.xml
