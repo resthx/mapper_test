@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.mapper_test.mapper.DirectoryMapper">
+    <sql id="commonSql">
+id ,name ,code ,value ,createTime ,updateTime
+    </sql>
+    <resultMap id="resultDirectory" type="com.example.mapper_test.entity.Directory" autoMapping="true">
+        <id property="id" column="id"></id>
+    </resultMap>
+    <select id="selectById" resultMap="resultDirectory">
+        select <include refid="commonSql"></include> from directory where id = #{id}
+    </select>
+    <select id="selectByPage" resultMap="resultDirectory">
+        select <include refid="commonSql"></include> from directory
+        <where>
+            <if test="directory.id!=null and directory.id!=''">
+                id = #{directory.id}
+            </if>
+            <if test="directory.name!=null and directory.name!=''">
+                name = #{directory.name}
+            </if>
+            <if test="directory.code!=null and directory.code!=''">
+                code = #{directory.code}
+            </if>
+            <if test="directory.value!=null and directory.value!=''">
+                value = #{directory.value}
+            </if>
+            <if test="directory.createTime!=null">
+                createTime = #{directory.createTime}
+            </if>
+            <if test="directory.updateTime!=null">
+                updateTime = #{directory.updateTime}
+            </if>
+        </where>
+    </select>
+</mapper>

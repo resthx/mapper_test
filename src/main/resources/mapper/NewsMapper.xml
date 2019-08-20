@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.mapper_test.mapper.NewsMapper">
+    <sql id="commonSql">
+id ,img ,click ,content
+    </sql>
+    <resultMap id="resultNews" type="com.example.mapper_test.entity.News" autoMapping="true">
+        <id property="id" column="id"></id>
+    </resultMap>
+    <select id="selectById" resultMap="resultNews">
+        select <include refid="commonSql"></include> from news where id = #{id}
+    </select>
+    <select id="selectByPage" resultMap="resultNews">
+        select <include refid="commonSql"></include> from news
+        <where>
+            <if test="news.id!=null and news.id!=''">
+                id = #{news.id}
+            </if>
+            <if test="news.img!=null and news.img!=''">
+                img = #{news.img}
+            </if>
+            <if test="news.click!=null">
+                click = #{news.click}
+            </if>
+            <if test="news.content!=null and news.content!=''">
+                content = #{news.content}
+            </if>
+        </where>
+    </select>
+</mapper>
