@@ -13,7 +13,7 @@ id ,name ,mobile ,img ,age ,createTime ,level ,isVIP
     <select id="selectByPage" resultMap="resultUser">
         select <include refid="commonSql"></include> from user
         <where>
-            <if test="user.id!=null and user.id!=''">
+            <if test="user.id !=null and user.id !=''">
                 id = #{user.id}
             </if>
             <if test="user.name!=null and user.name!=''">

@@ -1,6 +1,7 @@
 package generator;
 
 import com.example.mapper_test.entity.Account;
+import com.example.mapper_test.entity.Directory;
 import com.example.mapper_test.entity.News;
 import com.example.mapper_test.entity.User;
 import freemarker.template.*;
@@ -16,7 +17,7 @@ import java.util.*;
  * Description:
  * date: 2019/6/27 10:10
  *
- * @author ji
+ * @author JiLiugang
  * @version 1.0
  * @since JDK 1.8
  */
@@ -28,7 +29,7 @@ public class GeneratorCode {
     //项目主包名称
     private final static String packageName = "com.example.mapper_test";
     public static void main(String[] args) {
-        GeneratorCode.generatorCode(News.class);
+        GeneratorCode.generatorCode(Directory.class);
     }
     public static void generatorCode(Class entityClass) {
         //Configuration
