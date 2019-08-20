@@ -12,4 +12,8 @@ public interface UserService {
     User selectById(String id);
     List<User> selectByPage(User user,int page,Integer limit);
     int selectCount(User user);
+
+    int insertUser(User user);
+
+    int updateUser(User user);
 }

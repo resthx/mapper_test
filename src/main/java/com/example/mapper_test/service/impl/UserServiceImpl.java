@@ -33,4 +33,16 @@ public class UserServiceImpl implements UserService{
         Integer i = userMapper.selectCount(user);
         return i;
     }
+
+    @Override
+    public int insertUser(User user) {
+        int insert = userMapper.insert(user);
+        return insert;
+    }
+
+    @Override
+    public int updateUser(User user) {
+        int i = userMapper.updateById(user);
+        return i;
+    }
 }
