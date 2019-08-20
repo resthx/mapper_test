@@ -14,3 +14,4 @@ dvs.objectToJson = function (o) {
     });
     return serializeObj;
 }
+dvs.url = window.location.protocol+"//"+window.location.host;

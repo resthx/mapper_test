@@ -1,25 +1,89 @@
 $(document).ready(function() {
     var userVue = new Vue({
-            el: '#userForm',
-            data:{
-                userList:[],
-                page: 1,
-                limit: 10,
-                pageTotal: 1,
-                count: 10
-            },
-            mounted: function () {
-                this.searchUser();
-                layui.use(['laydate', 'form', 'laypage'], function () {
+        el: '#userForm',
+        data:{
+            userList:[],
+            page: 1,
+            limit: 10,
+            count: 10
+        },
+        mounted: function () {
+            layui.use(['laydate', 'form'], function () {
+                var laydate = layui.laydate;
+                var form = layui.form;
+                // 监听全选
+                form.on('checkbox(checkall)', function (data) {
+                    if (data.elem.checked) {
+                        $('tbody input').prop('checked', true);
+                    } else {
+                        $('tbody input').prop('checked', false);
+                    }
+                    form.render('checkbox');
+                });
 
-                    var laydate = layui.laydate;
-                    var form = layui.form;
+                //执行一个laydate实例
+                laydate.render({
+                    elem: '#start' //指定元素
+                });
+
+                //执行一个laydate实例
+                laydate.render({
+                    elem: '#end' //指定元素
+                });
+            });
+            var load = layer.load(1);
+            $.post("../user/find",{page:'1'},function (json) {
+                if (json.code!=0){
+                    alert("查询失败")
+                    return;
+                }
+                userVue.userList = json.data.users;
+                userVue.count = json.data.count;
+                userVue.flushPage(userVue.count);
+            })
+            layer.close(load);
+        },
+        methods :{
+            searchUser:function() {
+                var index = layer.load(1)
+                var data = $('#formData').serializeArray();
+                data.push({
+                    name:'page',
+                    value: this.page
+                });
+                data.push({
+                    name:'limit',
+                    value: this.limit
+                });
+                var objectToJson = dvs.objectToJson(data);
+                $.post("../user/find",objectToJson,function (json) {
+                    if (json.code!=0){
+                        alert("查询失败")
+                        return;
+                    }
+                    userVue.userList = json.data.users;
+                    //总条数改变的话刷新page插件
+                    if (userVue.count!=json.data.count) {
+                        userVue.flushPage(json.data.count)
+                    }
+                    userVue.count = json.data.count;
+                    layer.close(index);
+                })
+            },
+            searchUserBy :function(){
+                userVue.page = 1;
+                userVue.searchUser();
+            },
+            flushPage(count){
+                layui.use(['laypage'], function () {
                     //分页
                     var laypage = layui.laypage;
                     //完整功能
                     laypage.render({
                         elem: 'pageClick',
-                        count: userVue.count,
+                        count: count,
+                        limit: 10,
+                        limits: [5, 10, 20, 50, 100,200],
                         layout: ['prev', 'page', 'next', 'limit', 'refresh', 'skip'],
                         jump: function (obj,first) {
                             //首次不执行
@@ -30,77 +94,10 @@ $(document).ready(function() {
                             }
                         }
                     });
-                    /*//调用分页
-                laypage.render({
-                    elem: '#pageClick'
-                    ,count: data.length
-                    ,jump: function(obj){
-                        //模拟渲染
-                        /!*document.getElementById('biuuu_city_list').innerHTML = function(){
-                            var arr = []
-                                ,thisData = data.concat().splice(obj.curr*obj.limit - obj.limit, obj.limit);
-                            layui.each(thisData, function(index, item){
-                                arr.push('<li>'+ item +'</li>');
-                            });
-                            return arr.join('');
-                        }();*!/
-                    }
-                });*/
-                    // 监听全选
-                    form.on('checkbox(checkall)', function (data) {
-                        if (data.elem.checked) {
-                            $('tbody input').prop('checked', true);
-                        } else {
-                            $('tbody input').prop('checked', false);
-                        }
-                        form.render('checkbox');
-                    });
-
-                    //执行一个laydate实例
-                    laydate.render({
-                        elem: '#start' //指定元素
-                    });
-
-                    //执行一个laydate实例
-                    laydate.render({
-                        elem: '#end' //指定元素
-                    });
                 });
-            },
-            methods :{
-                searchUser:function() {
-                    var data = $('#formData').serializeArray();
-                    data.push({
-                        name:'page',
-                        value: this.page
-                    });
-                    data.push({
-                        name:'limit',
-                        value: this.limit
-                    });
-                    var objectToJson = dvs.objectToJson(data);
-                    $.post("../user/find",objectToJson,function (json) {
-                        if (json.code!=0){
-                            alert("查询失败")
-                            return;
-                        }
-                        userVue.userList = json.data.users;
-                        debugger
-                        userVue.count = json.data.count;
-                        // var limit = userVue.limit;
-                        // userVue.pageTotal = Math.ceil(count/limit);
-                    })
-                },
-                changePage:function (page) {
-                    userVue.page = page;
-                    this.searchUser();
-                },
-                changeLimit:function (limit) {
-                    userVue.limit = limit;
-                    this.searchUser();
-                },
             }
-        })
+        }
+    })
 })
 /*用户-停用*/
 function member_stop(obj,id){
@@ -149,5 +146,3 @@ function delAll (argument) {
         $(".layui-form-checked").not('.header').parents('tr').remove();
     });
 }
-
-

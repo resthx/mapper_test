@@ -24,8 +24,17 @@ public class User {
     private String img;
     private Integer age;
     private Date createTime;
+    private Date updateTime;
     private Integer level;
     private Boolean isVIP;
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public Date getCreateTime() {
         return createTime;

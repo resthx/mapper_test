@@ -4,6 +4,7 @@ import com.example.mapper_test.entity.User;
 import com.example.mapper_test.service.UserService;
 import com.example.mapper_test.util.EmptyUtil;
 import com.example.mapper_test.util.RespDate;
+import com.example.mapper_test.util.StringTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -50,7 +51,7 @@ public class UserController {
     public RespDate update(User user){
         int i = 0;
         if (EmptyUtil.isEmpty(user.getId())){
-            user.setId(UUID.randomUUID().toString());
+            user.setId(StringTool.getUUID());
             i = userService.insertUser(user);
         }else {
             i = userService.updateUser(user);

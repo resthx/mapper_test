@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.mapper_test.mapper.UserMapper">
     <sql id="commonSql">
-id ,name ,mobile ,img ,age ,createTime ,level ,isVIP
+id ,name ,mobile ,img ,age ,createTime ,level ,isVIP,updateTime
     </sql>
     <resultMap id="resultUser" type="com.example.mapper_test.entity.User" autoMapping="true">
         <id property="id" column="id"></id>
