@@ -20,7 +20,7 @@ $(document).ready(function() {
                     }
                     form.render('checkbox');
                 });
-
+                form.render('checkbox');
                 //执行一个laydate实例
                 laydate.render({
                     elem: '#start' //指定元素
@@ -30,18 +30,18 @@ $(document).ready(function() {
                 laydate.render({
                     elem: '#end' //指定元素
                 });
+                var load = layer.load(1);
+                $.post("../user/find",{page:'1'},function (json) {
+                    if (json.code!=0){
+                        alert("查询失败")
+                        return;
+                    }
+                    userVue.userList = json.data.users;
+                    userVue.count = json.data.count;
+                    userVue.flushPage(userVue.count);
+                })
+                layer.close(load);
             });
-            var load = layer.load(1);
-            $.post("../user/find",{page:'1'},function (json) {
-                if (json.code!=0){
-                    alert("查询失败")
-                    return;
-                }
-                userVue.userList = json.data.users;
-                userVue.count = json.data.count;
-                userVue.flushPage(userVue.count);
-            })
-            layer.close(load);
         },
         methods :{
             searchUser:function() {
@@ -73,6 +73,9 @@ $(document).ready(function() {
             searchUserBy :function(){
                 userVue.page = 1;
                 userVue.searchUser();
+            },
+            openUpdatePage(id){
+                xadmin.open('编辑','../user/user_update.html?id='+id,600,400);
             },
             flushPage(count){
                 layui.use(['laypage'], function () {

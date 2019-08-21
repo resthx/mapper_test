@@ -22,25 +22,33 @@
         <div class="layui-fluid">
             <div class="layui-row">
                 <form class="layui-form">
-                  <div class="layui-form-item">
-                      <label for="name" class="layui-form-label">
-                          <span class="x-red">*</span>登录名
-                      </label>
-                      <div class="layui-input-inline">
-                          <input type="text" id="name" name="name" required="" lay-verify="required"
-                          autocomplete="off" class="layui-input">
+                  <div class="layui-form-item"  hidden="hidden">
+                      <div class="layui-input-inline" >
+                          <input hidden="hidden" type="text" name="id" autocomplete="off" class="layui-input" value="${(user.id)!}">
                       </div>
                       <div class="layui-form-mid layui-word-aux">
                           <span class="x-red">*</span>将会成为您唯一的登入名
                       </div>
                   </div>
                   <div class="layui-form-item">
+                        <label for="name" class="layui-form-label">
+                            <span class="x-red">*</span>登录名
+                        </label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="name" name="name" required="" lay-verify="required"
+                                   autocomplete="off" class="layui-input" value="${(user.name)!}">
+                        </div>
+                        <div class="layui-form-mid layui-word-aux">
+                            <span class="x-red">*</span>将会成为您唯一的登入名
+                        </div>
+                    </div>
+                  <div class="layui-form-item">
                       <label for="phone" class="layui-form-label">
                           <span class="x-red">*</span>手机
                       </label>
                       <div class="layui-input-inline">
                           <input type="text" id="phone" name="mobile" required="" lay-verify="phone"
-                          autocomplete="off" class="layui-input">
+                          autocomplete="off" class="layui-input" value="${(user.mobile)!}">
                       </div>
                       <div class="layui-form-mid layui-word-aux">
                           <span class="x-red">*</span>将会成为您唯一的登入名
@@ -52,7 +60,7 @@
                       </label>
                       <div class="layui-input-inline">
                           <input type="text" id="age" name="age" required="" lay-verify="age"
-                          autocomplete="off" class="layui-input">
+                          autocomplete="off" class="layui-input" value="${(user.age)!}">
                       </div>
                       <div class="layui-form-mid layui-word-aux">
                           <span class="x-red">*</span>
@@ -91,7 +99,7 @@
                       <label for="L_repass" class="layui-form-label">
                       </label>
                       <button  class="layui-btn" lay-filter="add" lay-submit="">
-                          增加
+                          保存
                       </button>
                   </div>
               </form>
@@ -130,7 +138,7 @@
                             alert("添加失败")
                             return;
                         }
-                        layer.alert("增加成功", {
+                        layer.alert("保存成功", {
                                 icon: 6
                             },
                             function() {

@@ -32,6 +32,19 @@ public class UserController {
         ModelAndView modelAndView = new ModelAndView("admin/user/user_list");
         return modelAndView;
     }
+    @RequestMapping("user_update.html")
+    public ModelAndView user_update(@RequestParam(value = "id",required = false)String id){
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("admin/user/user_update");
+        User user = new User();
+        if (!EmptyUtil.isEmpty(id)){
+            user = userService.selectById(id);
+            modelAndView.addObject("user",user);
+        }else {
+            modelAndView.addObject("user",user);
+        }
+        return modelAndView;
+    }
     @RequestMapping("findById")
     public RespDate findById(@RequestParam("id") String id) throws InterruptedException {
         User user = userService.selectById(id);

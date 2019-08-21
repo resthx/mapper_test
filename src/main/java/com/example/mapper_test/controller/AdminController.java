@@ -23,8 +23,4 @@ public class AdminController {
     public String adminWelcome(){
         return "admin/welcome";
     }
-    @RequestMapping("user/user_update.html")
-    public String user_update(){
-        return "admin/user/user_update";
-    }
 }
